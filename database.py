@@ -1,8 +1,11 @@
 # database.py
 
 import sqlite3
+import os
 
 def get_connection(db_path="lfcarticles.db"):
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    db_path = os.path.join(base_dir, "lfcarticles.db")
     return sqlite3.connect(db_path)
 
 def create_table(conn):
