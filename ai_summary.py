@@ -61,7 +61,7 @@ def ai_summarize():
         system_prompt = base_prompt
     try:
         response = client.chat.completions.create(
-            model="gpt-4.1-nano",
+            model="gpt-4o-mini",
             messages=[{"role": "system", "content": f"{system_prompt}\n\n{combined_text}"}],
             temperature=0.7,
             max_tokens=1000
