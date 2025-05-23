@@ -11,6 +11,10 @@ This application performs the following tasks:
 - Delivers summaries through Telegram messages and email notifications
 - Maintains a history of previous summaries to avoid repetition
 
+## Example output
+
+![output352](https://github.com/user-attachments/assets/debf1299-57fb-4a15-b805-3238a66042f6)
+
 ## Features
 
 - **Automated Web Scraping**: Extracts Liverpool FC news articles while filtering out irrelevant content
