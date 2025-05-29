@@ -26,8 +26,8 @@ def send_telegram_message(message):
                	for recipient in recipients:
                    	bot.send_message(recipient, chunk, parse_mode='MarkdownV2')
         else:
-        	for recipient in recipients:
-            	bot.send_message(recipient, cleaned_message, parse_mode='MarkdownV2')
+            for recipient in recipients:
+                bot.send_message(recipient, cleaned_message, parse_mode='MarkdownV2')
     except Exception as e:
         print(f"Error sending Telegram message: {e}")
         try:
