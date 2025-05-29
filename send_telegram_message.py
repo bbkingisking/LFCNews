@@ -1,5 +1,4 @@
 # send_telegram_message.py
-
 import os
 import telebot
 from dotenv import load_dotenv
@@ -23,11 +22,11 @@ def send_telegram_message(message):
         if len(cleaned_message) > 4000:
             chunks = [cleaned_message[i:i+4000] for i in range(0, len(cleaned_message), 4000)]
             for chunk in chunks:
-	           	for recipient in recipients:
-	               	bot.send_message(recipient, chunk, parse_mode='MarkdownV2')
+               	for recipient in recipients:
+                   	bot.send_message(recipient, chunk, parse_mode='MarkdownV2')
         else:
-        	for recipient in recipients:
-            	bot.send_message(recipient, cleaned_message, parse_mode='MarkdownV2')
+            for recipient in recipients:
+                bot.send_message(recipient, cleaned_message, parse_mode='MarkdownV2')
     except Exception as e:
         print(f"Error sending Telegram message: {e}")
         try:

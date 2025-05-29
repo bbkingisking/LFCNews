@@ -1,5 +1,4 @@
-# send_email.py 
-
+# send_email.py
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
@@ -25,4 +24,3 @@ def send_email(message):
 
     except Exception as e:
         raise
-

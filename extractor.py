@@ -1,9 +1,17 @@
 # extractor.py
-
 import requests
 from bs4 import BeautifulSoup
 from urllib.parse import urlparse, urlunparse
-from database import save_article
+from database import get_connection, create_table, article_exists, save_article
+
+def scrape_latest_articles():
+    conn = get_connection()
+    create_table(conn)
+    urls = extract_frontpage_articles()
+    for url in urls:
+        if not article_exists(conn, url):
+            extract_article(conn, url)
+    conn.close()
 
 def extract_frontpage_articles():
     url = "https://www.football365.com/liverpool/news"

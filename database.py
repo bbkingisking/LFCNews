@@ -1,5 +1,4 @@
 # database.py
-
 import sqlite3
 import os
 
@@ -9,17 +8,10 @@ def get_connection(db_path="lfcarticles.db"):
     return sqlite3.connect(db_path)
 
 def create_table(conn):
-    c = conn.cursor()
-    c.execute("""
-        CREATE TABLE IF NOT EXISTS articles (
-            url TEXT PRIMARY KEY,
-            og_title TEXT,
-            published_time TEXT,
-            og_image TEXT,
-            author TEXT,
-            text TEXT
-        )
-    """)
+    schema_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "schema.sql")
+    with open(schema_path, "r", encoding="utf-8") as f:
+        schema_sql = f.read()
+    conn.executescript(schema_sql)
     conn.commit()
 
 def article_exists(conn, url):
