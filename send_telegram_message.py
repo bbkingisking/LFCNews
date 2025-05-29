@@ -19,12 +19,15 @@ def send_telegram_message(message):
     bot = telebot.TeleBot(os.getenv("TELEGRAM_BOT_TOKEN"))
     try:
         cleaned_message = clean_markdown(message)
+        recipients = [r.strip() for r in os.getenv("TELEGRAM_CHAT_ID").split(",")]
         if len(cleaned_message) > 4000:
             chunks = [cleaned_message[i:i+4000] for i in range(0, len(cleaned_message), 4000)]
             for chunk in chunks:
-                bot.send_message(os.getenv("TELEGRAM_CHAT_ID"), chunk, parse_mode='MarkdownV2')
+	           	for recipient in recipients:
+	               	bot.send_message(recipient, chunk, parse_mode='MarkdownV2')
         else:
-            bot.send_message(os.getenv("TELEGRAM_CHAT_ID"), cleaned_message, parse_mode='MarkdownV2')
+        	for recipient in recipients:
+            	bot.send_message(recipient, cleaned_message, parse_mode='MarkdownV2')
     except Exception as e:
         print(f"Error sending Telegram message: {e}")
         try:
