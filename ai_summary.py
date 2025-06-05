@@ -20,7 +20,9 @@ def load_recent_summaries(n=5):
     """, (n,))
     rows = c.fetchall()
     conn.close()
-    return [row[0] for row in rows]
+    list_of_summaries = [row[0] for row in rows]
+    concatenated_summaries = '\n'.join(list_of_summaries)
+    return concatenated_summaries
 
 def fetch_recent_articles():
     conn = get_connection()
@@ -49,13 +51,21 @@ def fetch_recent_articles():
 def ai_summarize():
     articles = fetch_recent_articles()
     combined_text = "\n\n".join([f"{article['Title']}\n{article['Text']}" for article in articles])
-    base_prompt = """You are a Liverpool (LFC) fan and supporter. You have access to some news published about the club from the last 24 hours.\nAnalyze all the provided articles and create a summary of the key developments and trends from the past 24 hours.
-    Begin your message with a ONE-SENTENCE summary stating whether the news is mostly positive, mostly negative, or mixed, and very briefly why. Then proceed to more or less 5 short bullet points that summarize the news for the last 24 hours. Don´t include any other preamble. Separate your bullet points with a newline symbol for better readability. Feel free to be biased towards our beloved club. Feel free to use casual language and emojis if appropriate. Feel free to ignore articles that are not relevant or that seem to be ads. Please do not use clickbait titles, summaries, or language. Be concise. Do not include live streaming information. The most important areas that fans would care about are completed/potential transfers, injuries, player/team stats, and match summaries/previews.
+    base_prompt = """
+    You are a Liverpool (LFC) fan and supporter. You have access to some news published about the club from the last 24 hours.
+    Analyze all the provided articles and create a summary of the key developments and trends from the past 24 hours.
+    Begin your message with a ONE-SENTENCE summary stating whether the news is mostly positive, mostly negative, or mixed, and very briefly why.
+    Then proceed to more or less 5 short bullet points that summarize the news for the last 24 hours.
+    Don't include any other preamble. Separate your bullet points with a newline symbol for better readability.
+    Feel free to be biased towards our beloved club. Feel free to use casual language and emojis if appropriate.
+    Feel free to ignore articles that are not relevant or that seem to be ads.
+    Please do not use clickbait titles, summaries, or language. Be concise. Do not include live streaming information.
+    The most important areas that fans would care about are completed/potential transfers, injuries, player/team stats, and match summaries/previews.
     """
     recent_summaries = load_recent_summaries()
     if recent_summaries:
-        history_instruction = "Below are the previous summaries:\n" + "\n\n".join(recent_summaries) + "\nDo not repeat..."
-        system_prompt = base_prompt + "\n" + history_instruction
+        history_instruction = f"Below are the 5 previous summaries you generated: {recent_summaries} Do not repeat the exact same points and phrasings from your previous summaries. Progress on the previous stories is obviously allowed."
+        system_prompt = f"{base_prompt} \n {history_instruction}"
     else:
         system_prompt = base_prompt
 
